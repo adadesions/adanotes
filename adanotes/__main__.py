@@ -1,11 +1,21 @@
 from datetime import datetime
 import click
+from pyfiglet import figlet_format
 
 from adanotes import note
 
 
 @click.group()
 def adanote():
+    '''
+    Welcome to AdaNotes
+    CLI Application for taking meaningful note.
+
+    versions 0.5.0
+
+    '''
+    click.secho(figlet_format('...Ada', font='speed'), fg='red')
+    click.secho(figlet_format('...Notes++', font='speed'), fg='yellow')
     pass
 
 

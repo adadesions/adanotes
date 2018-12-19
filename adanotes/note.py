@@ -28,15 +28,18 @@ def adding(data):
 
 def display():
     # TODO: Display sorted by deadline
-    print('Welcome to AdaNotes!')
-    print('='*100)
+    click.secho('AdaNotes showing your meaningful', fg='green', bold=True)
     print()
     with open('data/store.csv', newline='') as file:
         note_reader = csv.DictReader(file)
         for row in note_reader:
+            click.secho(f'Note: {row["content"]}', fg='yellow')
+            click.secho(f'Start: {row["created_datetime"]}', fg='magenta')
+            click.secho('Deadline:', fg='green', nl=False )
+            click.secho(f'{row["end_date"]}', fg='green', bg='black', nl=False)
+            click.secho(f'  {row["end_time"]}', fg='green', bg='black')
+            
+            # {row["end_time"]}')
             print(
-                f'Note: {row["content"]}\n'
-                f'Start: {row["created_datetime"]}\n'
-                f'Deadline: {row["end_date"]} {row["end_time"]}\n'
-                f'{"="*100}\n'
+                f'{"-"*92}\n'
             )
