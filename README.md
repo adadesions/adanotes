@@ -13,4 +13,4 @@ _(_)(_)(_)_/ |_/  \____/\__/ \___//____/  /_/   /_/
 </pre>
 
 
-<b>AdaNotes</b> is a command-line interface application for taking notes from termianl console and store it in cloud storage.
+<b>AdaNotes</b> is a command-line interface application for taking notes with terminal console and store it in cloud storage.
