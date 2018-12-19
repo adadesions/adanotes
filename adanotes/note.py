@@ -1,11 +1,15 @@
-import csv 
+import csv
+import uuid
 import click
 
-keys = ['content', 'end_date', 'end_time', 'created_datetime']
+keys = ['id', 'content', 'end_date', 'end_time', 'priority', 'created_datetime']
+
+
+def generate_id():
+    return str(uuid.uuid4())[:8]
 
 
 def adding(data):
-    # TODO: add id to a note
     stores = []
     data_keys = [key for key in data]
     
@@ -15,7 +19,7 @@ def adding(data):
 
     if data_keys == keys:
         with open('data/store.csv', 'w', newline='') as file:
-
+            data['id'] = generate_id()
             note_writer = csv.DictWriter(file, fieldnames=keys)
             stores.append(data)
 

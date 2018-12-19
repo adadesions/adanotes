@@ -23,12 +23,15 @@ def adanote():
 @click.option('--content', prompt='Taking note')
 @click.option('--end_date', prompt='End Date(DD-MM-YYYY)')
 @click.option('--end_time', prompt='End Time(HH:MM)')
-def add_note(content, end_date, end_time):
+@click.option('--priority', prompt='Priority')
+def add_note(content, end_date, end_time, priority):
     now = datetime.now()
     data = {
+        'id': '',
         'content': content,
         'end_date': end_date,
         'end_time': end_time,
+        'priority': priority,
         'created_datetime': now.strftime("%d-%m-%Y %H:%M")
     }
     note.adding(data)
