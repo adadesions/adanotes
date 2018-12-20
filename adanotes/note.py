@@ -179,8 +179,8 @@ def display():
     '''
 
     # TODO: Display sorted by deadline
-    click.secho('AdaNotes showing your meaningful', fg='green', bold=True)
-    print()
+    click.secho('AdaNotes showing your meaningful\n', fg='green', bold=True)
+
     store = get_notes()
     for row in store:
         click.secho(f'ID: {row["id"]}', fg='yellow', bg='blue', bold=True)
