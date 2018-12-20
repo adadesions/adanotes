@@ -7,7 +7,6 @@ from datetime import datetime
 
 '''
 Development Task
-1. Delete note from its ID
 2. Show note by deadline
 '''
 
@@ -135,7 +134,6 @@ def priority_display(priority_text):
     click.secho(f'Priority: {priority_text}', fg=colors.get(text, 'black'), bold=True)
 
 
-# TODO: Check deadline case
 def deadline_display(end_date, end_time):
     '''
     deadline_display
@@ -157,14 +155,11 @@ def deadline_display(end_date, end_time):
     for i, end in enumerate(end_datetime):
         end = int(end)
         cur = int(cur_datetime[i])
-        if cur <= end:
-            # End year greater than current year
-            if i == 0 and cur < end:
-                break
 
-            # End hours greater than current hours, no need to check minutes
-            if i == 3 and cur < end:
-                break
+        if cur < end:
+            break
+        elif cur == end:
+            continue
         else:
             click.secho('Deadline:', fg='white', nl=False )
             click.secho(f'{end_date} {end_time}', fg='white', bg='red')
@@ -186,14 +181,12 @@ def display():
     # TODO: Display sorted by deadline
     click.secho('AdaNotes showing your meaningful', fg='green', bold=True)
     print()
-    with open('data/store.csv', newline='') as file:
-        note_reader = csv.DictReader(file)
-        for row in note_reader:
-            click.secho(f'ID: {row["id"]}', fg='yellow', bg='blue', bold=True)
-            priority_display(row['priority'])
-            click.secho(f'Note: {row["content"]}', fg='yellow')
-            click.secho(f'Start: {row["created_datetime"]}', fg='magenta')
-            
-            deadline_display(row['end_date'], row['end_time'])
-            
-            print(f'{"-"*92}\n')
+    store = get_notes()
+    for row in store:
+        click.secho(f'ID: {row["id"]}', fg='yellow', bg='blue', bold=True)
+        priority_display(row['priority'])
+        click.secho(f'Note: {row["content"]}', fg='yellow')
+        click.secho(f'Start: {row["created_datetime"]}', fg='magenta')
+        deadline_display(row['end_date'], row['end_time'])
+
+        print(f'{"-"*92}\n')
