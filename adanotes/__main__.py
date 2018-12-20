@@ -1,5 +1,6 @@
 import click
 
+from calendar import calendar
 from datetime import datetime
 from pyfiglet import figlet_format
 
@@ -18,6 +19,7 @@ def adanote():
     click.secho(figlet_format('...Notes++', font='speed'), fg='yellow')
     click.secho(f'Author: {adanotes.__author__}', fg='cyan')
     click.secho(f'Version: {adanotes.__version__}', fg='cyan')
+
     pass
 
 
@@ -40,8 +42,20 @@ def add_note(content, end_date, end_time, priority):
 
 
 @adanote.command()
+@click.option('--note_id', prompt='Enter a note\' id')
+def delete_note(note_id):
+    note.deleting(note_id)
+
+@adanote.command()
 def show_note():
     note.display()
+
+
+@adanote.command()
+def show_calendar():
+    cur_year = int(datetime.now().year)
+    click.secho(calendar(cur_year))
+
 
 if __name__ == '__main__':
     adanote()

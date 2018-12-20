@@ -1,8 +1,16 @@
 import csv
 import uuid
 import click
+import adanotes
 
 from datetime import datetime
+
+'''
+Development Task
+1. Delete note from its ID
+2. Show note by deadline
+'''
+
 
 # Note's fields or keys
 keys = ['id', 'content', 'end_date', 'end_time', 'priority', 'created_datetime']
@@ -21,6 +29,50 @@ def generate_id():
     return str(uuid.uuid4())[:8]
 
 
+def get_notes():
+    '''
+    get_notes
+    
+    Getting notes from store
+    
+    :return: All notes from store in this version is .csv file
+    :rtype: List
+    '''
+
+    with open(adanotes.store_uri, newline='') as file:
+        note_reader = csv.DictReader(file)
+        store = [row for row in note_reader]
+
+        return store
+
+
+def write_note(store, data={}):
+    '''
+    write_note
+    
+    Writing a new row of note to store
+    
+    :param data: new note data from user
+    :type data: Dict
+    :param store: all notes data read from storage
+    :type store: List
+    :return: Writing status
+    :rtype: Bool
+    '''
+
+    with open(adanotes.store_uri, 'w', newline='') as file:
+            note_writer = csv.DictWriter(file, fieldnames=keys)
+
+            if data:
+                store.append(data)
+
+            note_writer.writeheader()
+            note_writer.writerows(store)
+            return True
+
+    return False
+
+
 def adding(data):
     '''
     adding
@@ -33,25 +85,35 @@ def adding(data):
     :rtype: Bool
     '''
 
-    stores = []
+    store = get_notes()
     data_keys = [key for key in data]
-    
-    with open('data/store.csv', newline='') as file:
-        note_reader = csv.DictReader(file)
-        stores = [row for row in note_reader]
+    data['id'] = generate_id()
 
     if data_keys == keys:
-        with open('data/store.csv', 'w', newline='') as file:
-            data['id'] = generate_id()
-            note_writer = csv.DictWriter(file, fieldnames=keys)
-            stores.append(data)
-
-            note_writer.writeheader()
-            note_writer.writerows(stores)
-
-        return True
+        return write_note(store, data)
     
     return False
+
+
+def deleting(id_):
+    is_found = False
+    store = get_notes()
+    for i, note in enumerate(store):
+        if note['id'] == id_:
+            del store[i]
+            is_found = True
+            break
+
+    if is_found:
+        write_note(store)
+        click.secho(f'Deleting note id: {id_} ', fg='red', nl=False)
+        click.secho(f'COMPLETED', fg='white', bg='green')
+
+        return True
+
+
+    click.secho(f'Deleting note id: {id_} ', fg='red', nl=False)
+    click.secho(f'NOT FOUND', fg='white', bg='red')
 
 
 def priority_display(priority_text):
@@ -73,6 +135,7 @@ def priority_display(priority_text):
     click.secho(f'Priority: {priority_text}', fg=colors.get(text, 'black'), bold=True)
 
 
+# TODO: Check deadline case
 def deadline_display(end_date, end_time):
     '''
     deadline_display
@@ -133,6 +196,4 @@ def display():
             
             deadline_display(row['end_date'], row['end_time'])
             
-            print(
-                f'{"-"*92}\n'
-            )
+            print(f'{"-"*92}\n')
