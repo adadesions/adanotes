@@ -4,14 +4,35 @@ import click
 
 from datetime import datetime
 
+# Note's fields or keys
 keys = ['id', 'content', 'end_date', 'end_time', 'priority', 'created_datetime']
 
 
 def generate_id():
+    '''
+    generate_id
+    
+    Generate note's id from UUID by get only first 8 charecters
+    
+    :return: note's ID
+    :rtype: String
+    '''
+
     return str(uuid.uuid4())[:8]
 
 
 def adding(data):
+    '''
+    adding
+    
+    Adding note to store
+
+    :param data: 
+    :type data: Dict
+    :return: Status of adding
+    :rtype: Bool
+    '''
+
     stores = []
     data_keys = [key for key in data]
     
@@ -34,6 +55,15 @@ def adding(data):
 
 
 def priority_display(priority_text):
+    '''
+    priority_display
+    
+    Displaying priority text by styling.
+    
+    :param priority_text: text in set {high, medium, low}
+    :type priority_text: String
+    '''
+
     text = str.lower(priority_text)
     colors = {
         'high': 'red',
@@ -44,6 +74,19 @@ def priority_display(priority_text):
 
 
 def deadline_display(end_date, end_time):
+    '''
+    deadline_display
+    
+    Displaying deadline text by styling
+    
+    :param end_date: deadline date or finish date
+    :type end_date: String with the format (dd-mm-yyyy)
+    :param end_time: deadline time or finish time
+    :type end_time: Straing with the format (hh:mm)
+    :return: Status of deadline which in time or overdue
+    :rtype: Bool
+    '''
+
     now = datetime.now().strftime('%Y-%m-%d-%H-%M')
     cur_datetime = now.split('-')
 
@@ -66,8 +109,17 @@ def deadline_display(end_date, end_time):
 
     click.secho('Deadline:', fg='white', nl=False )
     click.secho(f'{end_date} {end_time}', fg='white', bg='green')
+    return True
+
 
 def display():
+    '''
+    display
+    
+    Main note displaying method
+    
+    '''
+
     # TODO: Display sorted by deadline
     click.secho('AdaNotes showing your meaningful', fg='green', bold=True)
     print()
